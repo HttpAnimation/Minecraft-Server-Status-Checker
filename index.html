@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minecraft Server Status Checker</title>
+  <style>
+    body {
+      background-color: #222;
+      color: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 100px auto;
+      padding: 20px;
+      background-color: #333;
+      border-radius: 5px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      font-size: 16px;
+      border: none;
+      background-color: #555;
+      color: #fff;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background-color: #444;
+      border: none;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .result {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .success {
+      color: #00ff00;
+    }
+
+    .error {
+      color: #ff0000;
+    }
+
+    .external-link {
+      display: inline-block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Minecraft Server Status Checker</h1>
+    <div class="form-group">
+      <label for="serverIP">Server IP:</label>
+      <input type="text" id="serverIP" placeholder="Enter the server IP">
+    </div>
+    <button class="button" onclick="pingServer()">Ping Server</button>
+    <div class="result" id="result"></div>
+    <a href="https://httpanimation.github.io/HttpAnimations-Hub" class="external-link">
+      <button class="button">HttpAnimations</button>
+    </a>
+  </div>
+
+  <script>
+    function pingServer() {
+      var serverIP = document.getElementById('serverIP').value;
+      var resultElement = document.getElementById('result');
+      resultElement.innerHTML = 'Pinging server...';
+
+      var img = new Image();
+      var startTime = new Date().getTime();
+
+      img.onload = function() {
+        var endTime = new Date().getTime();
+        var pingTime = endTime - startTime;
+        resultElement.innerHTML = 'Server works! Ping time: ' + pingTime + 'ms';
+        resultElement.classList.add('success');
+      };
+
+      img.onerror = function() {
+        resultElement.innerHTML = 'Server does not work.';
+        resultElement.classList.add('error');
+      };
+
+      img.src = 'https://api.minetools.eu/ping/' + encodeURIComponent(serverIP);
+      setTimeout(function() {
+        if (!img.complete) {
+          img.src = ""; // Abort the request
+          resultElement.innerHTML = 'Server does not work.';
+          resultElement.classList.add('error');
+        }
+      }, 5000);
+    }
+  </script>
+</body>
+
+</html>
